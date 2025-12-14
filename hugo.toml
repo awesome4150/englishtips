@@ -1,4 +1,4 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://awesome4150.github.io/englishtips/'
 languageCode = 'en-us'
 title = 'Hugoでウェブページ作成はじめてみた'
 theme = "PaperMod"
