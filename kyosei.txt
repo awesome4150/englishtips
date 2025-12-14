@@ -1,0 +1,48 @@
+ありがとうございます、`hugo.toml` の内容を見せてもらって状況が整理できました。  
+
+ここで重要なのは：  
+- `disableThemeCSS = true` のような設定は入っていない → PaperMod の CSS パイプラインは有効。  
+- それでも `assets/css/extended/custom.css` が反映されない → **Extended CSS の仕組みが正しく動いていない**可能性が高いです。  
+
+---
+
+## 🔍 PaperMod の Extended CSS の仕組み
+PaperMod は `assets/css/extended/` 以下のファイルを **自動で取り込んでビルド**し、最終的にひとつの `stylesheet.…css` にまとめます。  
+つまり `<head>` に `custom.css` が直接リンクされることはなく、**まとめられた `stylesheet.…css` の中に含まれる**のが正しい挙動です。  
+
+もし検証ツールで `custom.css` が出てこない場合は、以下の可能性があります：  
+1. **ファイルの場所が違う**  
+   - `assets/css/extended/custom.css` ではなく `static/css/custom.css` に置いている。  
+   - → `static` はコピーされるだけで、テーマには組み込まれません。  
+
+2. **ファイル名が認識されていない**  
+   - PaperMod は `extended/` 以下のすべての `.css` を取り込みますが、拡張子やフォルダ構成が間違っていると無視されます。  
+
+3. **ビルドキャッシュ**  
+   - `hugo server --disableFastRender --cleanDestinationDir` を使ってキャッシュをクリアしてください。  
+
+---
+
+## ✅ 確実に反映させる方法（強制リンク方式）
+もし Extended CSS がどうしても効かない場合は、**自分で `<head>` に CSS を追加**する方法が確実です。  
+
+1. `layouts/partials/head.html` を作成（テーマの `head.html` をコピーして編集）。  
+2. その中に以下を追加：
+   ```html
+   <link rel="stylesheet" href="/css/custom.css">
+   ```
+3. `static/css/custom.css` にファイルを置く。  
+
+👉 これなら必ず `<head>` にリンクされ、検証ツールで確認できます。  
+
+---
+
+## 🎯 Seijiさんへのおすすめ
+- まず `assets/css/extended/custom.css` が正しく置かれているか再確認。  
+- それでも反映されない場合は「強制リンク方式」で `static/css/custom.css` を `<head>` に追加する。  
+
+---
+
+つまり、**Extended が効かない場合は強制的に `<head>` にリンクを追加するのが一番確実**です。  
+
+Seijiさん、まずは `static/css/custom.css` を作って `<head>` にリンクを追加する方法を試してみませんか？

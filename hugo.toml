@@ -1,0 +1,13 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'Hugoでウェブページ作成はじめてみた'
+theme = "PaperMod"
+
+[markup]
+  [markup.highlight]
+    style = "monokai"   # 黒背景系のスタイル
+    lineNumbers = false # 行番号を出したいなら true
+    noClasses = false   # CSS クラスを使う（テーマ側のスタイルが効く）
+    codeFences = true
+    guessSyntax = true
+	

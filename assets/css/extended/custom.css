@@ -1,0 +1,9 @@
+.post-single .post-header .post-title {
+  font-size: 24px !important;
+  margin-bottom: 0.5em;
+}
+
+.logo a {
+  font-size: 2em;
+  font-weight: bold;
+}
