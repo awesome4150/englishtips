@@ -1,0 +1,30 @@
+name: Deploy Hugo site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main   # mainブランチにpushされたら実行
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+        with:
+          submodules: true      # PaperModなどsubmoduleを含める
+          fetch-depth: 0        # 履歴を完全に取得
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'  # 最新版Hugoを使用
+
+      - name: Build site
+        run: hugo --minify        # Hugoでビルド（public/生成）
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public   # 公開するフォルダ
